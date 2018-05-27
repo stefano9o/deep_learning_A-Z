@@ -86,4 +86,50 @@ from sklearn.metrics import confusion_matrix
 
 cm = confusion_matrix(y_test, y_pred)
 print(cm)
+
+# Predicting a new customer with the following paramteres as per exercise
+#
+"""Geography: France
+Credit Score: 600
+Gender: Male
+Age: 40 years old
+Tenure: 3 years
+Balance: $60000
+Number of Products: 2
+Does this customer have a credit card ? Yes
+Is this customer an Active Member: Yes
+Estimated Salary: $50000"""
+
+# First metod: create a new csv files and rewxecute all the steps performed previously
+abs_file_path = os.path.join(script_dir, 'Churn_Modelling-new.csv')
+
+# Importing the new dataset containing the single observation
+dataset = pd.read_csv(abs_file_path)
+X = dataset.iloc[:, 3:13].values
+
+# Encoding categorical data using the same obj used before
+X[:, 1] = labelencoder_X_1.transform(X[:, 1])
+X[:, 2] = labelencoder_X_2.transform(X[:, 2])
+
+X = onehotencoder.transform(X).toarray()
+X = X[:, 1:]
+
+# Feature Scaling using the same obj used before
+X_new1 = sc.transform(X)
+
+# Predicting
+y_new_pred1 = classifier.predict(X_new1)
+
+# Second method: hardcoding the new observation in a NumPy array
+
+X = np.array([[0.0,0,600,1,40,3,60000,2,1,1,50000]])
+
+# Feature Scaling using the same obj used before
+X_new2 = sc.transform(X)
+
+# Predicting
+y_new_pred2 = classifier.predict(X_new2)
+
+y_new_pred = (y_new_pred2 > .5)
+
 backend.clear_session()
