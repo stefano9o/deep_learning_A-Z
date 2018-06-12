@@ -32,11 +32,11 @@ X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
 
-def build_classifier(optimizer):
+def build_classifier(optimizer, neuronsLayer1, neuronsLayer2):
     classifier = Sequential()
-    classifier.add(Dense(units=6, kernel_initializer='uniform', activation='relu', input_dim=11))
+    classifier.add(Dense(units=neuronsLayer1, kernel_initializer='uniform', activation='relu', input_dim=11))
     classifier.add(Dropout(0.1))
-    classifier.add(Dense(units=6, kernel_initializer='uniform', activation='relu'))
+    classifier.add(Dense(units=neuronsLayer2, kernel_initializer='uniform', activation='relu'))
     classifier.add(Dropout(0.1))
     classifier.add(Dense(units=1, kernel_initializer='uniform', activation='sigmoid'))
     classifier.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
@@ -44,9 +44,11 @@ def build_classifier(optimizer):
 
 
 classifier = KerasClassifier(build_fn=build_classifier)
-parameters = {'batch_size': [128, 256, 512],
-              'epochs': [300, 500],
-              'optimizer': ['adam']}
+parameters = {'batch_size': [32],
+              'epochs': [500],
+              'optimizer': ['SGD'],
+              'neuronsLayer1': [12],
+              'neuronsLayer2': [6]}
 grid_search = GridSearchCV(estimator=classifier,
                            param_grid=parameters,
                            scoring='accuracy',
