@@ -101,7 +101,7 @@ Is this customer an Active Member: Yes
 Estimated Salary: $50000"""
 
 # First metod: create a new csv files and rewxecute all the steps performed previously
-abs_file_path = os.path.join(script_dir, 'Churn_Modelling-new.csv')
+abs_file_path = os.path.join(script_dir, 'single_prediction.csv')
 
 # Importing the new dataset containing the single observation
 dataset = pd.read_csv(abs_file_path)
